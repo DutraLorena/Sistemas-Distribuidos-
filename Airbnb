@@ -1,0 +1,26 @@
+  
+syntax = "proto3";
+
+package quarto;
+
+message Ocupado { }
+
+message Quarto {
+  int32 id = 1;
+  string tipo = 2;
+  float tabela de precos = 3;
+}
+
+message PrecoTotal {
+  float valor = 1;
+}
+
+message ListaDeQuartos {
+  repeated Quarto quartos = 1;
+}
+
+service ServicoQuarto {
+  rpc RegistrarHospedagem (Quartos) returns (Ocupado);
+  rpc ListarQuartos (Ocupado) returns (ListaDeQuartos);
+  rpc FinalizaPedido (Ocupado) returns (PrecoTotal);
+}
