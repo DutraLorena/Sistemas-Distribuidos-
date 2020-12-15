@@ -10,4 +10,4 @@ npm install --save @grpc/proto-loader
 npm install --save readline-sync
 # Executação
 npm run server
-npm run client
+npm run hospede
