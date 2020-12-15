@@ -1,11 +1,11 @@
-// definição do caminho do arquivo proto
-const PROTO_PATH = "./restaurant.proto";
+// definir o proto
+const PROTO_PATH = "./hotel.proto";
 
 const grpc = require('grpc');
 
 const protoLoader = require('@grpc/proto-loader');
 
-// carregamento do arquivo proto e geração das definições
+// carregar proto e definições
 const packageDefinition = protoLoader.loadSync(
 	PROTO_PATH,
 	{keepCase: true,
@@ -15,68 +15,68 @@ const packageDefinition = protoLoader.loadSync(
 	 oneofs: true
 	});
 
-// carregamento do código do serviço
-var protoDescriptor = grpc.loadPackageDefinition(packageDefinition).lanche;
+// carregar do código do serviço
+var protoDescriptor = grpc.loadPackageDefinition(packageDefinition).quarto;
 
-const lanche = [
+const quarto = [
 	{id: 0,
-	nome: 'finalizado',
+	nome: 'concluido',
 	preco: 0.0},
 	{ id: 1,
-	nome: "hamburguer",
-	preco: 15.0},
+	nome: "Quarto Simples",
+	preco: 110.0},
 	{ id: 2,
-	nome: "pizza",
-	preco: 25.0},
+	nome: "Quarto Casal",
+	preco: 260.0},
 	{ id: 3,
-	nome: "refri",
-	preco: 5.0}
+	nome: "suite",
+	preco: 400.0}
 ];
 
-// "banco de dados" de carros
-const pedido = [];
 
-function listarLanches(call, callback) {
+const reserva = [];
+
+function listarQuartos(call, callback) {
 	callback(null, {
-		lanches: pedido
+		quarto: reserva
 	});
 };
 
-function registrarPedido(call, callback) {
-	const lanche = {
+function registrarReserva(call, callback) {
+	const quarto = {
 		id: call.request.id,
 		nome: call.request.nome,
 		preco: call.request.preco,
 	};
 
-	pedido.push(lanche);
+	reserva.push(quartos);
 
 	callback(null, {});
 };
 
-function finalizaPedido(call, callback) {
+function finalizaReserva(call, callback) {
 	total = 0;
 
-	pedido.forEach(function(d) {
+	reserva.forEach(function(d) {
 		total += d.preco;
 	});
 
 	callback(null, {valor: total});
 };
 
-// instancia objeto do servidor
+// Ibjeto do servidor
 const server = new grpc.Server();
 
-// adiciona as implementações das funções ao serviço exportado de carro
-server.addService(protoDescriptor.ServicoLanche.service,
+// Implementar as funções ao serviço exportador
+server.addService(protoDescriptor.ServicoQuarto.service,
 				  {
-					  RegistrarPedido: registrarPedido,
-					  ListarLanches: listarLanches,
-					  FinalizaPedido: finalizaPedido
+					  RegistrarReserva: registrarReserva,
+					  ListarQuartos: listarQuartos,
+					  FinalizaReserva: finalizaReserva
 				  });
 
-// associa o serviço a todos os endereços e a porta 50051 (sem segurança)
+// Serviço e endereços na porta 50051 (without security)
 server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
 
-// inicia o serviço
+// Que comecem os trabalhos
 server.start();
